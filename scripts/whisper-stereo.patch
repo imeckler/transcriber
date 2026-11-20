@@ -1,0 +1,22 @@
+--- a/examples/common-whisper.cpp
++++ b/examples/common-whisper.cpp
+@@ -117,14 +117,16 @@
+ 
+     if (stereo) {
+ 		pcmf32s.resize(2);
+-		pcmf32s[0].resize(frame_count);
+-		pcmf32s[1].resize(frame_count);
+-		for (uint64_t i = 0; i < frame_count; i++) {
++		pcmf32s[0].resize(frames_read);
++		pcmf32s[1].resize(frames_read);
++		for (uint64_t i = 0; i < frames_read; i++) {
+ 			pcmf32s[0][i] = pcmf32[2*i];
+ 			pcmf32s[1][i] = pcmf32[2*i + 1];
++			pcmf32[i] = 0.5f * (pcmf32s[0][i] + pcmf32s[1][i]);
+ 		}
+     }
+ 
++    pcmf32.resize(frames_read);
+     ma_decoder_uninit(&decoder);
+ 
+     return true;
